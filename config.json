@@ -1,0 +1,174 @@
+{
+	"log": {
+		"access": "/var/log/v2ray/access.log",
+		"error": "/var/log/v2ray/error.log",
+		"loglevel": "warning"
+	},
+	"routing": {
+		"strategy": "rules",
+		"settings": {
+			"rules": [{
+					"type": "field",
+					"ip": [
+						"0.0.0.0/8",
+						"10.0.0.0/8",
+						"100.64.0.0/10",
+						"127.0.0.0/8",
+						"169.254.0.0/16",
+						"172.16.0.0/12",
+						"192.0.0.0/24",
+						"192.0.2.0/24",
+						"192.168.0.0/16",
+						"198.18.0.0/15",
+						"198.51.100.0/24",
+						"203.0.113.0/24",
+						"::1/128",
+						"fc00::/7",
+						"fe80::/10"
+					],
+					"outboundTag": "blocked"
+				}
+			]
+		}
+	},
+	"inbound": {
+		"port": 840,
+		"protocol": "vmess",
+		"tag": "vmess-tcp-inbound",
+		"settings": {
+			"clients": [{
+					"id": "5c5c39b4-dddc-498a-8cf8-d698a3eb63b8",
+					"level": 5,
+					"alterId": 100,
+					"email": "rottesama@gmail.com",
+					"comment": "自用"
+				}, {
+					"id": "61811434-735f-4719-87d3-44c8ce6d1b58",
+					"level": 5,
+					"alterId": 64,
+					"email": "other@gmail.com",
+					"comment": "他用"
+				}, {
+					"id": "12089e6e-2662-495b-ab63-7b776317878d",
+					"level": 9,
+					"alterId": 100,
+					"email": "trans-jp01@gmail.com",
+					"comment": "trans-jp01"
+				}
+			],
+			"detour": {
+				"to": "vmess-tcp-in-pool"
+			}
+		},
+		"streamSettings": {
+			"network": "tcp"
+		}
+	},
+	"inboundDetour": [{
+			"port": 850,
+			"protocol": "vmess",
+			"tag": "vmess-kcp-inbound",
+			"settings": {
+				"clients": [{
+						"id": "5c5c39b4-dddc-498a-8cf8-d698a3eb63b8",
+						"level": 1,
+						"alterId": 100,
+						"email": "rottesama@gmail.com",
+						"comment": "自用"
+					}, {
+						"id": "61811434-735f-4719-87d3-44c8ce6d1b58",
+						"level": 1,
+						"alterId": 64,
+						"email": "other@gmail.com",
+						"comment": "他用"
+					}
+				],
+				"detour": {
+					"to": "vmess-kcp-in-pool"
+				}
+			},
+			"streamSettings": {
+				"network": "kcp"
+			}
+		}, {
+			"port": "10001-10500",
+			"protocol": "vmess",
+			"tag": "vmess-tcp-in-pool",
+			"allocate": {
+				"strategy": "random",
+				"refresh": 5,
+				"concurrency": 50
+			},
+			"settings": {
+				"default": {
+					"level": 1,
+					"alterId": 50
+				}
+			},
+			"streamSettings": {
+				"network": "tcp"
+			}
+		}, {
+			"port": "10501-11000",
+			"protocol": "vmess",
+			"tag": "vmess-kcp-in-pool",
+			"allocate": {
+				"strategy": "random",
+				"refresh": 5,
+				"concurrency": 50
+			},
+			"settings": {
+				"default": {
+					"level": 1,
+					"alterId": 50
+				}
+			},
+			"streamSettings": {
+				"network": "kcp"
+			}
+		}, {
+			"port": 888,
+			"tag": "shadowsocks-ios-in",
+			"protocol":"shadowsocks",
+			"settings": {
+				"method": "aes-128-cfb",
+				"password": "rottesama",
+				"udp": true
+			}
+			
+		}
+	],
+	"outbound": {
+		"protocol": "freedom",
+		"settings": {},
+		"mux": {
+			"enable": true
+		}
+	},
+	"outboundDetour": [{
+			"protocol": "blackhole",
+			"settings": {},
+			"tag": "blocked"
+		}
+	],
+	"transport": {
+		"tcpSettings": {
+			"connectionReuse": true,
+			"header": {
+				"type": "none"
+			}
+		},
+		"kcpSettings": {
+			"mtu": 1350,
+			"tti": 50,
+			"uplinkCapacity": 80,
+			"downlinkCapacity": 130,
+			"congestion": true,
+			"readBufferSize": 1,
+			"writeBufferSize": 1,
+			"header": {
+				"type": "none"
+			}
+		}
+	}
+}
