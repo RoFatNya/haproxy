@@ -167,7 +167,8 @@ config_haproxy(){
     if [ -f /etc/haproxy/haproxy.cfg ];then
         cp -p /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
     fi
-
+    mkdir /etc/haproxy
+    
     cat > /etc/haproxy/haproxy.cfg<<-EOF
 global
     ulimit-n  51200
