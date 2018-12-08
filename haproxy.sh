@@ -199,9 +199,9 @@ EOF
 
 download(){
     TEMP_PATH=/tmp
-	HAPROXY_NAME=haproxy-1.8.5.tar.gz
-	HAPROXY_VERSION='1.8.5'
-	wget -O ${TEMP_PATH}/${HAPROXY_NAME} https://github.com/RoFatNya/haproxy/raw/master/haproxy-1.8.5.tar.gz
+    HAPROXY_NAME=haproxy-1.8.5.tar.gz
+    HAPROXY_VERSION='1.8.5'
+    wget -O ${TEMP_PATH}/${HAPROXY_NAME} https://github.com/RoFatNya/haproxy/raw/master/haproxy-1.8.5.tar.gz
 	
 }
 
@@ -210,13 +210,14 @@ install(){
     if [ "${OS}" == 'CentOS' ];then
         #yum install -y haproxy
 
-		TEMP_WORK_PATH=${TEMP_PATH}/${HAPROXY_NAME%%*.tar.gz}
-		cd ${TEMP_PATH}
-		tar -xzvf '${HAPROXY_NAME}' '${TEMP_WORK_PATH}'
-		cd ${TEMP_WORK_PATH}
-		make TARGET=linux2628 USE_PCRE=1 USE_OPENSSL=1 USE_ZLIB=1
-		make install
-		make clean
+        TEMP_WORK_PATH=${TEMP_PATH}/haproxy-1.8.5
+        cd ${TEMP_PATH}
+        tar -xzvf ${HAPROXY_NAME} 
+        cd ${TEMP_WORK_PATH}
+        make TARGET=linux2628 USE_PCRE=1 USE_OPENSSL=1 USE_ZLIB=1
+        make install
+        make clean
+	
     else
         apt-get -y update
         apt-get install -y haproxy
