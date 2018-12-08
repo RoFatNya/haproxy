@@ -210,7 +210,7 @@ install(){
     if [ "${OS}" == 'CentOS' ];then
         #yum install -y haproxy
 
-		TEMP_WORK_PATH =${TEMP_PATH}/${HAPROXY_NAME%%*.tar.gz}
+		TEMP_WORK_PATH=${TEMP_PATH}/${HAPROXY_NAME%%*.tar.gz}
 		cd ${TEMP_PATH}
 		tar -xzvf ${HAPROXY_NAME} ${TEMP_WORK_PATH}
 		cd ${TEMP_WORK_PATH}
