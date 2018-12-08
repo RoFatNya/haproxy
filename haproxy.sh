@@ -212,7 +212,7 @@ install(){
 
 		TEMP_WORK_PATH=${TEMP_PATH}/${HAPROXY_NAME%%*.tar.gz}
 		cd ${TEMP_PATH}
-		tar -xzvf ${HAPROXY_NAME} ${TEMP_WORK_PATH}
+		tar -xzvf '${HAPROXY_NAME}' '${TEMP_WORK_PATH}'
 		cd ${TEMP_WORK_PATH}
 		make TARGET=linux2628 USE_PCRE=1 USE_OPENSSL=1 USE_ZLIB=1
 		make install
