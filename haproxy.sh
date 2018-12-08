@@ -2,18 +2,18 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 #=================================================================#
-#   System Required:  CentOS, Debian, Ubuntu                      #
+#   System Required:  CentOS                                      #
 #   Description: Install haproxy for Shadowsocks server           #
-#   Author: netwboy						  #
-#   Intro:  https://www.gaomingsong.com                           #
+#   Author: RoFatNya	                                          #
+#   Intro:  https://www.github.com/RoFatNya/haproxy/README        #
 #=================================================================#
 
 clear
 echo ""
 echo "#############################################################"
 echo "# Install haproxy for Shadowsocks server                    #"
-echo "# Intro: https://www.gaomingsong.com/480.html	          #"
-echo "# Author: Netwboy					          #"
+echo "#                                                           #"
+echo "# Author: RoFatNya                                           #"
 echo "#############################################################"
 echo ""
 
@@ -170,39 +170,53 @@ config_haproxy(){
 
     cat > /etc/haproxy/haproxy.cfg<<-EOF
 global
-ulimit-n  51200
+    ulimit-n  51200
+    maxconn 256
+	log /home/logs/haproxy/ local0
+	daemon
+    
 defaults
-log global
-mode    tcp
-option  dontlognull
-timeout connect 1000ms
-timeout client 150000ms
-timeout server 150000ms
+    mode tcp
+    log global
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
 listen status
-bind 0.0.0.0:1080
-mode http
-log global
-stats refresh 30s
-stats uri /admin?stats
-stats realm Private lands
-stats auth admin:password
-stats hide-version
-frontend ssin
-bind *:${startport}-${endport}
-default_backend ssout
-backend ssout
-server server1 ${haproxyip} maxconn 204800
+    bind 0.0.0.0:1080
+    mode http
+    log global
+    stats refresh 30s
+
+frontend ss-in
+    bind *:${startport}-${endport}
+    default_backend ssout
+	
+backend ss-out
+    server server1 ${haproxyip} maxconn 204800
 EOF
 }
 
 download(){
-	wget http://
+    TEMP_PATH=/tmp
+	HAPROXY_NAME=haproxy-1.8.5.tar.gz
+	HAPROXY_VERSION='1.8.5'
+	wget -O ${TEMP_PATH}/${HAPROXY_NAME} https://github.com/RoFatNya/haproxy/raw/master/haproxy-1.8.5.tar.gz
+	
 }
 
 install(){
     # Install haproxy
     if [ "${OS}" == 'CentOS' ];then
-        yum install -y haproxy
+        #yum install -y haproxy
+
+		TEMP_WORK_PATH =${TEMP_PATH}/${HAPROXY_NAME%%*.tar.gz}
+		cd ${TEMP_PATH}
+		tar -xzvf ${HAPROXY_NAME} ${TEMP_WORK_PATH}
+		cd ${TEMP_WORK_PATH}
+		make TARGET=linux2628 USE_PCRE=1 USE_OPENSSL=1 USE_ZLIB=1
+		make install
+		make clean
     else
         apt-get -y update
         apt-get install -y haproxy
