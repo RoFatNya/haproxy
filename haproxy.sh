@@ -223,7 +223,7 @@ install(){
         apt-get install -y haproxy
     fi
 
-    if [ -d /etc/haproxy ]; then
+    if [ -d /usr/local/sbin/haproxy ]; then
         echo "haproxy install successed."
 
         echo "Config haproxy start..."
