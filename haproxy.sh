@@ -173,8 +173,9 @@ config_haproxy(){
 global
     ulimit-n  51200
     maxconn 256
-	log /home/logs/haproxy/ local0
-	daemon
+    log /home/logs/haproxy/ local0 debug
+    log localhost local0 debug
+    daemon
     
 defaults
     mode tcp
@@ -194,7 +195,7 @@ frontend ss-in
     default_backend ss-out
 	
 backend ss-out
-    server server1 ${haproxyip} maxconn 204800
+    server server1 ${haproxyip} maxconn 20480
 EOF
 }
 
@@ -202,7 +203,7 @@ download(){
     TEMP_PATH=/tmp
     HAPROXY_NAME=haproxy-1.8.5.tar.gz
     HAPROXY_VERSION='1.8.5'
-    wget -O ${TEMP_PATH}/${HAPROXY_NAME} https://github.com/RoFatNya/haproxy/raw/master/haproxy-1.8.5.tar.gz
+    wget -O ${TEMP_PATH}/${HAPROXY_NAME} https://github.com/RoFatNya/haproxy/raw/master/haproxy-2.0.6.tar.gz
 	
 }
 
