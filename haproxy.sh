@@ -207,7 +207,7 @@ install(){
         tar -xzvf ${HAPROXY_NAME} 
         cd ${TEMP_WORK_PATH}
 		make clean
-        make -j 1 TARGET=linux-glibc USE_OPENSSL=1 USE_ZLIB=1 USE_LUA=1 USE_PCRE=1 USE_SYSTEMD=1
+        make -j 1 TARGET=linux-glibc USE_OPENSSL=1 USE_ZLIB=1
         make install
         make clean
 	
